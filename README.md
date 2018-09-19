@@ -6,7 +6,9 @@ hive:
 
 
 1)查询2014年12月10日到2014年12月13日有多少人浏览了商品
- select count(*) from full_shopping where time >= 2014-12-10 and time <= 2014-12-13;
+ select count(*) from full_shopping where time >= to_date('2014-12-10') and time <= to_date('2014-12-13');
+ OK
+ 3855684
  
 2)以天为统计单位，依次显示每天网站卖出去的商品的个数
  select time,count(*) count from full_shopping group by time order by time;
