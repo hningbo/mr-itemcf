@@ -77,11 +77,10 @@ public class ItemCFMRTwo {
 
                     int item1 = Integer.parseInt(itemScore1[0]);
                     int item2 = Integer.parseInt(itemScore2[0]);
-                    item1 = Math.min(item1, item2);
-                    item2 = Math.max(item1, item2);
 
                     itemPair.setItemOne(item1);
                     itemPair.setItemTwo(item2);
+                    System.out.println("map: get itemPair : " + itemPair.toString());
                     context.write(itemPair, one);
                 }
             }
@@ -91,7 +90,7 @@ public class ItemCFMRTwo {
     public static class ItemCFReducerTwo extends Reducer<ItemPair, LongWritable, ItemPair, LongWritable> {
         @Override
         protected void reduce(ItemPair key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
-            long sum = 1L;
+            long sum = 0L;
             for (LongWritable value : values) {
                 sum += value.get();
             }
@@ -99,7 +98,7 @@ public class ItemCFMRTwo {
         }
     }
 
-    private static class ItemPair implements WritableComparable<ItemPair> {
+    public static class ItemPair implements WritableComparable<ItemPair> {
 
         private int itemOne;
         private int itemTwo;
