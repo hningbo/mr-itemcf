@@ -16,11 +16,12 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.io.IOException;
 
 public class ItemCFMRFour {
-    public static class ItemCFMapperFour extends Mapper<Text, DoubleWritable, DoubleWritable, Text> {
+    public static class ItemCFMapperFour extends Mapper<Text, Text, DoubleWritable, Text> {
         @Override
-        protected void map(Text key, DoubleWritable value, Context context) throws IOException, InterruptedException {
-            System.out.println(value.get());
-            context.write(value, key);
+        protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+            double v = Double.parseDouble(value.toString());
+            DoubleWritable outputKey= new DoubleWritable(v);
+            context.write(outputKey, key);
         }
     }
 
