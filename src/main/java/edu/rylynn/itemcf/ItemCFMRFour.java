@@ -6,6 +6,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.WritableComparator;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -16,6 +17,18 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.io.IOException;
 
 public class ItemCFMRFour {
+
+    public class MyComparator extends WritableComparator{
+        public MyComparator(){
+            super(DoubleWritable.class, true);
+        }
+
+        @Override
+        public int compare(Object a, Object b) {
+            return -super.compare(a, b);
+        }
+    }
+
     public static class ItemCFMapperFour extends Mapper<Text, Text, DoubleWritable, Text> {
         @Override
         protected void map(Text key, Text value, Context context) throws IOException, InterruptedException {
@@ -39,7 +52,7 @@ public class ItemCFMRFour {
         Job job = Job.getInstance(conf, "item_cf4");
 
         job.setJarByClass(ItemCFMRFour.class);
-
+        job.setSortComparatorClass(MyComparator.class);
         job.setMapperClass(ItemCFMapperFour.class);
         job.setReducerClass(ItemCFReducerFour.class);
 
